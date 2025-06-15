@@ -1,10 +1,11 @@
 import Title from "antd/es/typography/Title";
-import { Button, Card, Space } from "antd";
+import { Button, Space } from "antd";
 import { Post } from "@/types/post";
 import { getPosts } from "@/lib/api";
 import Link from "next/link";
 import Paragraph from "antd/es/typography/Paragraph";
 import styles from "./page.module.css";
+import PostsList from "./components/PostsList";
 
 const Home = async () => {
   const posts: Post[] = await getPosts();
@@ -24,13 +25,7 @@ const Home = async () => {
         </Space>
 
         {posts.length > 0 ? (
-          <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            {posts.map((post) => (
-              <Card key={post.id} title={post.title}>
-                <Paragraph>{post.content}</Paragraph>
-              </Card>
-            ))}
-          </Space>
+          <PostsList posts={[...posts].slice(-3)} title="Latest posts" />
         ) : (
           <Paragraph type="secondary">No posts here 😢</Paragraph>
         )}

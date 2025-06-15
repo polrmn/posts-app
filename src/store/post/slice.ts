@@ -30,6 +30,7 @@ const postSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+
     addPostPending: (state, action: PayloadAction<PostInput>) => {
       state.isLoading = true;
     },
@@ -38,6 +39,32 @@ const postSlice = createSlice({
       state.posts.push(action.payload);
     },
     addPostFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    editPostPending: (state, action: PayloadAction<Post>) => {
+      state.isLoading = true;
+    },
+    editPostFulfilled: (state, action: PayloadAction<Post>) => {
+      state.isLoading = false;
+      state.posts = state.posts.map((post) =>
+        post.id === action.payload.id ? action.payload : post
+      );
+    },
+    editPostFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    deletePostPending: (state) => {
+      state.isLoading = true;
+    },
+    deletePostFulfilled: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.posts = state.posts.filter((post) => post.id !== action.payload);
+    },
+    deletePostFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
@@ -51,6 +78,12 @@ export const {
   addPostPending,
   addPostFulfilled,
   addPostFailure,
+  editPostPending,
+  editPostFulfilled,
+  editPostFailure,
+  deletePostPending,
+  deletePostFulfilled,
+  deletePostFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;
